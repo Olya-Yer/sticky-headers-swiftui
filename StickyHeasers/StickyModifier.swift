@@ -11,8 +11,8 @@
 import SwiftUI
 
 extension View {
-    func sticky(lastItemY: CGFloat, isFixed: Bool = false, isRevers: Bool = false, isSeeMore: Bool = false) -> some View {
-        modifier(Sticky(lastItemY: lastItemY, isFixed: isFixed, isRevers: isRevers, isSeeMore: isSeeMore))
+    func sticky(lastItemY: CGFloat, isFixed: Bool = false, isRevers: Bool = false) -> some View {
+        modifier(Sticky(lastItemY: lastItemY, isFixed: isFixed, isRevers: isRevers))
     }
 }
 
@@ -21,10 +21,9 @@ struct Sticky: ViewModifier {
     var lastItemY: CGFloat
     var isFixed: Bool
     var isRevers: Bool
-    var isSeeMore: Bool
-    @State public var frame: CGRect = .zero
+    @State var frame: CGRect = .zero
     @State var scrollAmount: CGFloat = 0
-    @State public var isScrollingUp: Bool = false
+    @State var isScrollingUp: Bool = false
     @Namespace var id
     
     var isSticking: Bool {
@@ -113,9 +112,6 @@ struct Sticky: ViewModifier {
     }
     
     var offset: CGFloat {
-        if isSeeMore {
-            return 0
-        }
         if isRevers, let reversView {
             let minY = frame.minY
             let height = frame.height
@@ -239,7 +235,7 @@ extension EnvironmentValues {
 
 struct UseStickyHeaders: ViewModifier {
     static let container = "stickyContainer"
-    @State public var frames: StickyRects.Value = [:]
+    @State var frames: StickyRects.Value = [:]
     
     func body(content: Content) -> some View {
         content
